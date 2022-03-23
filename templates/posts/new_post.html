@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+<div class="container mt-4">
+
+    <form method="post" action="{% url 'new_post' %}">
+        {% csrf_token %}
+
+        {% bootstrap_form form %}
+
+        {% buttons %}
+        <button type="submit" class="btn btn-primary">
+            Post
+        </button>
+        {% endbuttons %}
+
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+</div>
+{% endblock %}

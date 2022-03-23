@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% url 'profile' as profile_url %}
+{% url 'connections' as connections_url %}
+
+<style>
+    .container{
+        margin-top: 2rem;
+    }
+    .profile__nav a {
+        font-size: 14px !important;
+    }
+    .profile__nav .active {
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col col-sm-12 col-lg-2">
+            <div class="card">
+                <div class="card-body">
+                    <nav class="profile__nav">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.path == profile_url %}active{% endif %}" aria-current="page" href="{% url 'profile' %}">Personal Info</a>
+                            </li>
+                            <hr>
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.path == connections_url %}active{% endif %}" href="{% url 'connections' %}">Connections</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="col col-12 col-lg-8 mt-2 mt-lg-0">
+            {% block profile_content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block content %}
+
+<style>
+    .container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+    }
+
+</style>
+
+<div class="container">
+    <div class="card" style="width: 24rem;">
+        <div class="card-body">
+            <div class="card-title">
+                <h3>
+                    <small class="text-muted">Login</small>
+                  </h3>
+                  <hr>
+            </div>
+            {% if next %}
+            {% if user.is_authenticated %}
+            <p>Your account doesn't have access to this page. To proceed,
+                please login with an account that has access.</p>
+            {% else %}
+            <p>Please login to see this page.</p>
+            {% endif %}
+            {% endif %}
+
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+
+                {% bootstrap_form form %}
+
+                {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    login
+                </button>
+                {% endbuttons %}
+
+                <input type="hidden" name="next" value="{{ next }}">
+            </form>
+
+            {# Assumes you set up the password_reset view in your URLconf #}
+            <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

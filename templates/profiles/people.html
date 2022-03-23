@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load bootstrap_icons %}
+
+
+{% block content %}
+    <style>
+        .container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+        .people__search-box-container{
+            display: flex;
+            justify-content: center;
+            width: 75%;
+            margin-top: 2rem;
+        }
+        .result-card{
+            width: 100%;
+        }
+        .people__search-results{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 75%;
+        }
+        .result-card{
+            text-decoration: none;
+            color: grey;
+        }
+    </style>
+    <div class="container">
+        <div class="people__search-box-container">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">{% bs_icon 'search' %}</span>
+                <input type="text" id="people__search-box" class="form-control" placeholder="Type here to search people" aria-label="Type here to search people" aria-describedby="basic-addon2">
+              </div>
+        </div>
+
+        <div class="people__search-results" id="people__search-results">
+            Search Results Will Show Here
+        </div>
+    </div>
+
+
+<script>
+    var data = "{{data}}"
+    data = JSON.parse(data.replace(/&quot;/g,'"'));
+    console.log(data)
+
+    var searchInput = document.getElementById("people__search-box")
+    var searchResults = document.getElementById("people__search-results")
+    
+    function populateResults(value) {
+        var results = data.filter(d => {
+            if (d.phone_number.includes(value) || d.email.toLowerCase().includes(value) || d.name.toLowerCase().includes(value)){
+                return true;
+            } else {
+                return false;
+            }
+        })
+        console.log(results)
+        var html = ""
+
+        for( var d of results ){
+            var url = "{% url 'profile_detail' id=0 %}".replace('0', d.id)
+            html += `
+            <a href=${url} class="card result-card" style="width:100%; margin-bottom: 1rem;">
+            <div class="card-body">
+                <p>${d.name}</p>
+                <p>${d.email}</p>
+                <p>${d.phone_number}</p>
+            </div>
+            </a>
+            `
+        }
+        if(value == ""){
+            searchResults.innerHTML = "Search Results Will Show Here";
+        }
+        else if(value != "" && results.length == 0){
+            searchResults.innerHTML = "No Results";
+        } else {
+            searchResults.innerHTML = html;
+        }
+
+        console.log(results)
+    }
+
+    searchInput.addEventListener('keyup', () => {
+        var value = searchInput.value
+        populateResults(value.toLowerCase());
+    })
+
+</script>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .new-post__btn{
+        position: sticky;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+        margin-bottom: 20px;
+    }
+
+</style>
+<div class="container mt-4">
+        <a href="{% url 'new_post' %}" class="btn btn-primary new-post__btn">New Post</a>
+    {% for post in posts %}
+    <div class="card">
+        <div class="card-body">
+            <div class="card-title"></div>
+            <div class="card-subtitle mb-2 text-muted">
+                Author: {{post.author.phone_number}}
+            </div>
+            <div class="card-text">
+                {{post.content}}
+            </div>
+
+            <div class="card-subtitle mt-2 text-muted">
+                Posted On: {{post.posted_on}}
+            </div>
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+</div>
+{% endblock %}
